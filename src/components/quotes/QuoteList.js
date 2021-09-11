@@ -32,7 +32,9 @@ const QuoteList = (props) => {
 
   // Changing the type of Sorting taking place
   const changeSortingHandler = () => {
-    history.push("/quotes?sort=" + (isSortingAscending ? "desc" : "asc"));
+    history.push(
+      `${location.pathname}?sort=${isSortingAscending ? "desc" : "asc"}`
+    );
   };
 
   return (
