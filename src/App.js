@@ -6,6 +6,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import AllQuotes from "./pages/AllQuotes";
 import QuoteDetail from "./pages/QuoteDetail";
 import NewQuote from "./pages/NewQuote";
+import NotFound from "./pages/NotFound";
 // The wrapper element for the entire page. Thus we can render Navbar side by side
 import Layout from "./components/layout/Layout";
 
@@ -25,6 +26,10 @@ function App() {
         </Route>
         <Route path="/quotes/:quoteId">
           <QuoteDetail />
+        </Route>
+        {/* When nothing is found. Universal path 404 */}
+        <Route path="*">
+          <NotFound />
         </Route>
       </Switch>
     </Layout>

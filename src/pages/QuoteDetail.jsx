@@ -1,18 +1,41 @@
 // Importing React and React Dom
 import React from "react";
-import { useParams, Route } from "react-router";
+import { useParams, Route, Link } from "react-router-dom";
 
 // Importing custom components
 import Comments from "../components/comments/Comments";
+import Highlighted from "../components/quotes/HighlightedQuote";
+
+const DUMMY_QUOTES = [
+  { id: "q1", author: "Max", text: "Learning so Fast" },
+  { id: "q2", author: "May", text: "Learning so Slow" },
+  { id: "q3", author: "Mayer", text: "Learning so Quick" },
+  { id: "q4", author: "Mayo", text: "Learning so Nicely" },
+];
 
 const QuoteDetail = () => {
   // Extract params from the useParams hook
   const params = useParams();
 
+  // Selecting the Quote
+  const quote = DUMMY_QUOTES.find((quote) => quote.id === params.quoteId);
+
+  // If quote not there id does not exist
+  if (!quote) {
+    return <p>No Quote Found</p>;
+  }
+
   return (
     <React.Fragment>
-      <h1>Quote Detail Page</h1>
-      <p>{params.quoteId}</p>
+      <Highlighted text={quote.text} author={quote.author} />
+      {/* Creating an extra Route just for the load comments button */}
+      <Route path={`quotes/${params.quoteId}`} exact>
+        <article className="centered">
+          <Link className="btn--flat" to={`/quotes/${params.quoteId}/comments`}>
+            Load Comments
+          </Link>
+        </article>
+      </Route>
       {/* Comment Route */}
       <Route path={`/quotes/${params.quoteId}/comments`}>
         <Comments />
