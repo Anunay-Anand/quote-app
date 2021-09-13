@@ -38,6 +38,11 @@ body {
   border-color: #11acac;
 }
 
+.btn:disabled {
+  background-color: gray;
+  border-color: gray;
+}
+
 .btn--flat {
   cursor: pointer;
   font: inherit;

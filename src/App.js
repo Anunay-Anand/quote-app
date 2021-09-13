@@ -16,14 +16,14 @@ function App() {
 
   return (
     <Layout>
-      <Switch>
-        <Suspense
-          fallback={
-            <article className="centered">
-              <LoadingSpinner />
-            </article>
-          }
-        >
+      <Suspense
+        fallback={
+          <article className="centered">
+            <LoadingSpinner />
+          </article>
+        }
+      >
+        <Switch>
           <Route path="/" exact>
             <Redirect to="/quotes" />
           </Route>
@@ -41,8 +41,8 @@ function App() {
           <Route path="*">
             <NotFound />
           </Route>
-        </Suspense>
-      </Switch>
+        </Switch>
+      </Suspense>
     </Layout>
   );
 }

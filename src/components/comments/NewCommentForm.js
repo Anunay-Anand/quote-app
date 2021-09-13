@@ -1,5 +1,5 @@
 // Importing React and other libraries
-import { useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import useHttp from "../../hooks/use-http";
 import { addComment } from "../../lib/api";
 
@@ -10,13 +10,17 @@ import LoadingSpinner from "../UI/LoadingSpinner";
 import classes from "./NewCommentForm.module.css";
 
 const NewCommentForm = (props) => {
-  const commentTextRef = useRef();
+  // Using state to check the input and validity
+  const [userComment, setUserComment] = useState("");
 
   // Sending comment Data using custom component
   const { sendRequest, status, error } = useHttp(addComment);
 
   // Re adding comments
   const { onAddedComment } = props;
+
+  // optional: Could validate here
+  const isCommentValid = userComment.trim() !== "";
 
   // Using useEffect to show animation
   useEffect(() => {
@@ -28,12 +32,20 @@ const NewCommentForm = (props) => {
   const submitFormHandler = (event) => {
     event.preventDefault();
 
-    // getting comment daTA
-    const enteredText = commentTextRef.current.value;
-    // optional: Could validate here
+    // getting comment data
+    const enteredText = userComment;
 
     // send comment to server
     sendRequest({ commentData: { text: enteredText }, quoteId: props.quoteId });
+
+    // Remove the comment data after submission
+    setUserComment("");
+  };
+
+  // Handle comment state and data
+  const userCommentHandler = (event) => {
+    // Setting comment data
+    setUserComment(event.target.value);
   };
 
   return (
@@ -45,10 +57,17 @@ const NewCommentForm = (props) => {
       )}
       <div className={classes.control} onSubmit={submitFormHandler}>
         <label htmlFor="comment">Your Comment</label>
-        <textarea id="comment" rows="5" ref={commentTextRef}></textarea>
+        <textarea
+          id="comment"
+          rows="5"
+          onChange={userCommentHandler}
+          value={userComment}
+        ></textarea>
       </div>
       <div className={classes.actions}>
-        <button className="btn">Add Comment</button>
+        <button className="btn" disabled={!isCommentValid}>
+          Add Comment
+        </button>
       </div>
     </form>
   );
